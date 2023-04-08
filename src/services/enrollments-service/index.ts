@@ -5,12 +5,13 @@ import addressRepository, { CreateAddressParams } from '@/repositories/address-r
 import enrollmentRepository, { CreateEnrollmentParams } from '@/repositories/enrollment-repository';
 import { exclude } from '@/utils/prisma-utils';
 import { ViaCEPAddress } from '@/protocols';
+import { noContentError } from '@/errors/no-content-error';
 
 async function getAddressFromCEP(cep: string): Promise<getAddressFromCEPResult> {
   const result = await request.get(`${process.env.VIA_CEP_API}/${cep}/json/`);
 
   if (!result.data) {
-    throw notFoundError();
+    throw noContentError();
   }
 
   if (result.data.erro) {
