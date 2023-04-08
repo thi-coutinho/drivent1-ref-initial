@@ -10,12 +10,8 @@ import { noContentError } from '@/errors/no-content-error';
 async function getAddressFromCEP(cep: string): Promise<getAddressFromCEPResult> {
   const result = await request.get(`${process.env.VIA_CEP_API}/${cep}/json/`);
 
-  if (!result.data) {
+  if (!result.data || result.data.erro) {
     throw noContentError();
-  }
-
-  if (result.data.erro) {
-    throw invalidDataError(['invalid CEP']);
   }
 
   const { bairro, localidade, complemento, logradouro, uf } = result.data as ViaCEPAddress;
