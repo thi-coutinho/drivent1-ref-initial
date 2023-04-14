@@ -6,21 +6,13 @@ async function findManyTicketTypes(): Promise<TicketType[]> {
   return prisma.ticketType.findMany();
 }
 
-async function createNewTicket(ticketTypeId: number, userId: number) {
-  const { id: enrollmentId } = await prisma.enrollment.findFirst({
-    where: {
-      userId,
-    },
-    select: {
-      id: true,
-    },
-  });
+async function createNewTicket(ticketTypeId: number, enrollmentId: number) {
   return await prisma.ticket.create({
     data: {
       status: 'RESERVED',
       ticketTypeId,
       enrollmentId,
-      updatedAt: dayjs().date().toString(),
+      updatedAt: dayjs().toDate(),
     },
     include: {
       TicketType: true,
