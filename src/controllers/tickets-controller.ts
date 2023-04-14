@@ -26,7 +26,6 @@ export async function createNewTicket(
     const ticket: Ticket & { TicketType: TicketType } = await ticketsService.createNewTicket(ticketTypeId, userId);
     return res.status(httpStatus.CREATED).send(ticket);
   } catch (error) {
-    if (error.name === 'NotFoundError') return res.status(httpStatus.NOT_FOUND).send(error.message);
-    else next(error);
+    return next(error);
   }
 }
