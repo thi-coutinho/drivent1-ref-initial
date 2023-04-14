@@ -29,7 +29,6 @@ export function handleApplicationErrors(err: ApplicationError | Error, _req: Req
   }
 
   if (err.name === 'NotFoundError') {
-    console.log('entrei no not Found', httpStatus.NOT_FOUND);
     return res.status(httpStatus.NOT_FOUND).send({
       message: err.message,
     });
