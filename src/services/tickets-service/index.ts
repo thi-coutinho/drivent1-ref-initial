@@ -17,11 +17,18 @@ async function createNewTicket(ticketTypeId: number, userId: number) {
   return newTicket;
 }
 
+async function getTicket(userId: number) {
+  const tickets = await ticketRepository.findFirstTicket(userId);
+  if (!tickets) throw notFoundError();
+  return tickets;
+}
+
 export type TicketEntry = { ticketTypeId: number };
 
 const ticketsService = {
   getTicketTypes,
   createNewTicket,
+  getTicket,
 };
 
 export default ticketsService;

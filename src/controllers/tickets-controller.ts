@@ -29,3 +29,13 @@ export async function createNewTicket(
     return next(error);
   }
 }
+
+export async function getTicket(req: AuthenticatedRequest, res: Response, next: NextFunction) {
+  const { userId } = req;
+  try {
+    const tickets = await ticketsService.getTicket(userId);
+    return res.send(tickets);
+  } catch (error) {
+    return next(error);
+  }
+}
