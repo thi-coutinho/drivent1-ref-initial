@@ -27,3 +27,7 @@ export type RequestError = {
   name: string;
   message: string;
 };
+
+export type TicketEntry = { ticketTypeId: number };
+
+export type TicketId = { ticketId: number };

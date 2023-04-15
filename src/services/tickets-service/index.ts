@@ -18,12 +18,10 @@ async function createNewTicket(ticketTypeId: number, userId: number) {
 }
 
 async function getTicket(userId: number) {
-  const tickets = await ticketRepository.findFirstTicket(userId);
+  const tickets = await ticketRepository.findFirstTicketByUser(userId);
   if (!tickets) throw notFoundError();
   return tickets;
 }
-
-export type TicketEntry = { ticketTypeId: number };
 
 const ticketsService = {
   getTicketTypes,

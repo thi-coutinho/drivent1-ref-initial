@@ -1,9 +1,13 @@
 import Joi from 'joi';
 import { Ticket } from '@prisma/client';
-import { TicketEntry } from '@/services';
+import { TicketEntry, TicketId } from '@/protocols';
 
 export const createTicketSchema = Joi.object<TicketEntry>({
   ticketTypeId: Joi.number().required(),
+});
+
+export const TicketIdSchema = Joi.object<TicketId>({
+  ticketId: Joi.number().required(),
 });
 
 export const ticketSchema = Joi.object<Ticket>({
