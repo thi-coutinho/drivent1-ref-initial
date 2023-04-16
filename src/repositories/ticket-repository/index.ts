@@ -34,11 +34,22 @@ async function findFirstTicketById(ticketId: number) {
   });
 }
 
+async function getTicketPrice(ticketId: number) {
+  const {
+    TicketType: { price },
+  } = await prisma.ticket.findFirst({
+    where: { id: ticketId },
+    select: { TicketType: { select: { price: true } } },
+  });
+  return price;
+}
+
 const ticketRepository = {
   findManyTicketTypes,
   createNewTicket,
   findFirstTicketByUser,
   findFirstTicketById,
+  getTicketPrice,
 };
 
 export default ticketRepository;
