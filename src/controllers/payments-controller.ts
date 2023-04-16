@@ -16,7 +16,6 @@ export async function getPayment(req: AuthenticatedRequest, res: Response, next:
 }
 
 export async function makePayment(req: AuthenticatedRequest, res: Response, next: NextFunction) {
-  console.log('entrei no payment controller');
   const paymentInput = req.body as PaymentInput;
   const { userId } = req;
   try {

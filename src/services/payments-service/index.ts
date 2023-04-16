@@ -13,7 +13,6 @@ async function getPayment(ticketId: number, userId: number) {
 }
 
 async function makePayment(paymentInput: PaymentInput, userId: number) {
-  console.log('entrei no process');
   await validateTicket(paymentInput.ticketId, userId);
 
   const price = await ticketRepository.getTicketPrice(paymentInput.ticketId);
@@ -23,9 +22,7 @@ async function makePayment(paymentInput: PaymentInput, userId: number) {
 }
 
 async function validateTicket(ticketId: number, userId: number) {
-  console.log('entrei no validate');
   const ticket = await ticketRepository.findFirstTicketById(ticketId);
-  console.log('ticket achado foi: ', ticket);
   if (!ticket) throw notFoundError();
   else if (ticket.Enrollment.userId !== userId) throw unauthorizedError();
 }

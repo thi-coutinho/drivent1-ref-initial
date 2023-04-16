@@ -1,7 +1,7 @@
 import { Router } from 'express';
 import { authenticateToken, validateBody, validateQuery } from '@/middlewares';
-import { getPayment, makePayment } from '@/controllers/payments-controller';
 import { TicketIdSchema, paymentInputSchema } from '@/schemas';
+import { getPayment, makePayment } from '@/controllers';
 
 const paymentsRouter = Router();
 paymentsRouter
