@@ -1,5 +1,4 @@
-import { TicketType } from '@prisma/client';
-import dayjs from 'dayjs';
+import { TicketStatus, TicketType } from '@prisma/client';
 import { prisma } from '@/config';
 
 async function findManyTicketTypes(): Promise<TicketType[]> {
@@ -9,10 +8,9 @@ async function findManyTicketTypes(): Promise<TicketType[]> {
 async function createNewTicket(ticketTypeId: number, enrollmentId: number) {
   return await prisma.ticket.create({
     data: {
-      status: 'RESERVED',
+      status: TicketStatus.RESERVED,
       ticketTypeId,
       enrollmentId,
-      updatedAt: dayjs().toDate(),
     },
     include: {
       TicketType: true,
