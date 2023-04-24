@@ -3,7 +3,7 @@ import enrollmentRepository from '@/repositories/enrollment-repository';
 import hotelRepository from '@/repositories/hotel-repository';
 import ticketRepository from '@/repositories/ticket-repository';
 
-async function validadeHotelRequest(userId: number): Promise<void> {
+async function validateHotelRequest(userId: number): Promise<void> {
   // Não existe (inscrição, ticket): 404 (not found)
   const hasEnrollment = await enrollmentRepository.findByUserId(userId);
   if (!hasEnrollment) throw notFoundError();
@@ -16,14 +16,14 @@ async function validadeHotelRequest(userId: number): Promise<void> {
 }
 
 async function getHotels(userId: number) {
-  await validadeHotelRequest(userId);
+  await validateHotelRequest(userId);
   const hotels = await hotelRepository.findMany();
-  if (!hotels.length) throw notFoundError();
+  if (hotels.length === 0) throw notFoundError();
   return hotels;
 }
 
 async function getHotelbyId(userId: number, hotelId: number) {
-  await validadeHotelRequest(userId);
+  await validateHotelRequest(userId);
   const hotel = await hotelRepository.findById(hotelId);
   if (!hotel) throw notFoundError();
   return hotel;
