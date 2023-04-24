@@ -25,7 +25,7 @@ async function getHotels(userId: number) {
 async function getHotelbyId(userId: number, hotelId: number) {
   await validadeHotelRequest(userId);
   const hotel = await hotelRepository.findById(hotelId);
-  if (!hotel) throw notFoundError();
+  if (!hotel.id) throw notFoundError();
   return hotel;
 }
 
