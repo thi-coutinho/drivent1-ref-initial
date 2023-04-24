@@ -16,13 +16,15 @@ async function validadeHotelRequest(userId: number): Promise<void> {
 }
 
 async function getHotels(userId: number) {
-  validadeHotelRequest(userId);
+  await validadeHotelRequest(userId);
   return await hotelRepository.findMany();
 }
 
 async function getHotelbyId(userId: number, hotelId: number) {
-  validadeHotelRequest(userId);
-  return await hotelRepository.findById(hotelId);
+  await validadeHotelRequest(userId);
+  const hotel = await hotelRepository.findById(hotelId);
+  if (!hotel) throw notFoundError();
+  return hotel;
 }
 
 const hotelsService = {
