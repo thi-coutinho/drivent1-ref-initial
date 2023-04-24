@@ -17,7 +17,9 @@ async function validadeHotelRequest(userId: number): Promise<void> {
 
 async function getHotels(userId: number) {
   await validadeHotelRequest(userId);
-  return await hotelRepository.findMany();
+  const hotels = await hotelRepository.findMany();
+  if (!hotels.length) throw notFoundError();
+  return hotels;
 }
 
 async function getHotelbyId(userId: number, hotelId: number) {
