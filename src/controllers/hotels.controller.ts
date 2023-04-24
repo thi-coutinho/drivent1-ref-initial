@@ -13,8 +13,10 @@ export async function getHotels(req: AuthenticatedRequest, res: Response, next: 
 }
 
 export async function getHotelbyId(req: AuthenticatedRequest, res: Response, next: NextFunction) {
-  const { userId, params: hotelId } = req;
-
+  const {
+    userId,
+    params: { hotelId },
+  } = req;
   try {
     const hotel = await hotelsService.getHotelbyId(userId, Number(hotelId));
     res.send(hotel);
