@@ -1,5 +1,5 @@
 import { generateCPF, getStates } from '@brazilian-utils/brazilian-utils';
-import { faker } from '@faker-js/faker/locale/pt_BR';
+import faker from '@faker-js/faker/locale/pt_BR';
 import { createEnrollmentSchema } from '@/schemas';
 
 describe('createEnrollmentSchema', () => {
