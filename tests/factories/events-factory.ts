@@ -1,5 +1,5 @@
 import dayjs from 'dayjs';
-import faker from '@faker-js/faker';
+import faker from '@faker-js/faker/locale/pt_BR';
 import { Event } from '@prisma/client';
 import { prisma } from '@/config';
 

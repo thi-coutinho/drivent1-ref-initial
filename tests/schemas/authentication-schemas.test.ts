@@ -1,4 +1,4 @@
-import faker from '@faker-js/faker';
+import faker from '@faker-js/faker/locale/pt_BR';
 import { signInSchema } from '@/schemas';
 
 describe('signInSchema', () => {

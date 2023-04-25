@@ -1,4 +1,4 @@
-import faker from '@faker-js/faker';
+import faker from '@faker-js/faker/locale/pt_BR';
 import { createUser } from '../factories';
 import { cleanDb } from '../helpers';
 import { init } from '@/app';

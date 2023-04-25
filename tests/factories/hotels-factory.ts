@@ -1,4 +1,4 @@
-import faker from '@faker-js/faker';
+import faker from '@faker-js/faker/locale/pt_BR';
 import { prisma } from '@/config';
 
 export async function createHotel() {

@@ -1,6 +1,6 @@
 import supertest from 'supertest';
 import httpStatus from 'http-status';
-import faker from '@faker-js/faker';
+import faker from '@faker-js/faker/locale/pt_BR';
 import * as jwt from 'jsonwebtoken';
 import { TicketStatus } from '@prisma/client';
 import {
