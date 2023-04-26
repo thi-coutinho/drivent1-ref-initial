@@ -1,9 +1,9 @@
 import { Router } from 'express';
 import { authenticateToken } from '@/middlewares';
-import { getByUserId } from '@/controllers/booking-controller';
+import { getByUserId, create } from '@/controllers/booking-controller';
 
 const bookingsRouter = Router();
 
-bookingsRouter.all('/*', authenticateToken).get('/', getByUserId);
+bookingsRouter.all('/*', authenticateToken).get('/', getByUserId).post('/', create);
 
 export { bookingsRouter };
