@@ -14,13 +14,13 @@ export async function getByUserId(req: AuthenticatedRequest, res: Response, next
 }
 
 export async function create(
-  req: AuthenticatedRequest & { params: { roomId: number } },
+  req: AuthenticatedRequest & { body: { roomId: number } },
   res: Response,
   next: NextFunction,
 ) {
   const {
     userId,
-    params: { roomId },
+    body: { roomId },
   } = req;
   try {
     const booking: { bookingId: number } = await bookingService.create(userId, roomId);
