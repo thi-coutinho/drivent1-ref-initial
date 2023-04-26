@@ -13,8 +13,9 @@ async function getByUserId(userId: number) {
 
 async function create(userId: number, roomId: number) {
   await validateBooking(userId, roomId);
-  const bookingId = await bookingRepository.create(userId, roomId);
-  return bookingId;
+  const booking = await bookingRepository.create(userId, roomId);
+  const idOutput = { bookingId: booking.id };
+  return idOutput;
 }
 
 async function validateBooking(userId: number, roomId: number) {
