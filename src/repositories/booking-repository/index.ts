@@ -16,8 +16,16 @@ async function find(userId: number): Promise<
   });
 }
 
+async function create(userId: number, roomId: number) {
+  return await prisma.booking.create({
+    data: { userId, roomId },
+    select: { id: true },
+  });
+}
+
 const bookingRepository = {
   find,
+  create,
 };
 
 export default bookingRepository;
