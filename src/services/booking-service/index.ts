@@ -18,10 +18,19 @@ async function create(userId: number, roomId: number) {
   return idOutput;
 }
 
+async function update(userId: number, roomId: number, bookingId: number) {
+  await validateRoom(roomId);
+  const oldBooking = await bookingRepository.find(userId);
+  if (!oldBooking || oldBooking.id !== bookingId) throw invalidBookingError();
+
+  const newBooking = await bookingRepository.update(oldBooking.id, roomId);
+
+  const idOutput = { bookingId: newBooking.id };
+  return idOutput;
+}
+
 async function validateBooking(userId: number, roomId: number) {
-  const room = await hotelRepository.findRoom(roomId);
-  if (!room) throw notFoundError();
-  if (room.capacity <= room.Booking.length) throw roomFullyBookedError();
+  await validateRoom(roomId);
   const ticket = await ticketRepository.findFirstTicketByUser(userId);
   if (
     !ticket ||
@@ -33,9 +42,16 @@ async function validateBooking(userId: number, roomId: number) {
   }
 }
 
+async function validateRoom(roomId: number) {
+  const room = await hotelRepository.findRoom(roomId);
+  if (!room) throw notFoundError();
+  if (room.capacity <= room.Booking.length) throw roomFullyBookedError();
+}
+
 const bookingService = {
   getByUserId,
   create,
+  update,
 };
 
 export default bookingService;

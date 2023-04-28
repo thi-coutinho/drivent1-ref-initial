@@ -18,3 +18,7 @@ export async function createValidBooking(user: User) {
   const room = await createValidRoom();
   return await createBooking(user.id, room.id);
 }
+
+export async function getBooking(user: User) {
+  return await prisma.booking.findFirst({ where: { userId: user.id } });
+}

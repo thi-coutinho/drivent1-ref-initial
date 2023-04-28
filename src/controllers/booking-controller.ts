@@ -29,3 +29,21 @@ export async function create(
     next(error);
   }
 }
+
+export async function update(
+  req: AuthenticatedRequest & { body: { roomId: number }; params: { bookingId: string } },
+  res: Response,
+  next: NextFunction,
+) {
+  const {
+    userId,
+    body: { roomId },
+  } = req;
+  const { bookingId } = req.params;
+  try {
+    const booking: { bookingId: number } = await bookingService.update(userId, roomId, Number(bookingId));
+    res.send(booking);
+  } catch (error) {
+    next(error);
+  }
+}
