@@ -2,17 +2,8 @@ import supertest from 'supertest';
 import httpStatus from 'http-status';
 import faker from '@faker-js/faker/locale/pt_BR';
 import * as jwt from 'jsonwebtoken';
-import { TicketStatus } from '@prisma/client';
 import { cleanDb, generateValidToken } from '../helpers';
-import {
-  createBooking,
-  createEnrollmentWithAddress,
-  createHotel,
-  createRooms,
-  createTicket,
-  createTicketType,
-  createUser,
-} from '../factories';
+import { createFullRoom, createUser, createValidBooking, createValidRoom } from '../factories';
 import app, { init } from '@/app';
 
 const server = supertest(app);
@@ -56,12 +47,7 @@ describe('GET /booking', () => {
     it('Should respond 200 and booking info', async () => {
       const user = await createUser();
       const token = await generateValidToken(user);
-      const enrollment = await createEnrollmentWithAddress(user);
-      const ticketType = await createTicketType(false, true);
-      await createTicket(enrollment.id, ticketType.id, TicketStatus.PAID);
-      const hotel = await createHotel();
-      const rooms = await createRooms(hotel.id, 3);
-      const booking = await createBooking(user.id, rooms[0].id);
+      const booking = await createValidBooking(user);
       const expectedOutput = {
         id: booking.id,
         Room: {
@@ -74,6 +60,62 @@ describe('GET /booking', () => {
 
       expect(response.status).toEqual(httpStatus.OK);
       expect(response.body).toEqual(expectedOutput);
+    });
+  });
+});
+
+describe('POST /booking', () => {
+  describe('failed Authentication', () => {
+    it('Should respond 401 if not auth', async () => {
+      const room = await createValidRoom();
+      const response = await server.post('/booking').send({ roomId: room.id });
+
+      expect(response.status).toBe(httpStatus.UNAUTHORIZED);
+    });
+    it('Should respond 401 if token is not valid', async () => {
+      const fakeToken = faker.datatype.string(12);
+      const room = await createValidRoom();
+      const response = await server
+        .post('/booking')
+        .set('Authorization', `Bearer ${fakeToken}`)
+        .send({ roomId: room.id });
+
+      expect(response.status).toBe(httpStatus.UNAUTHORIZED);
+    });
+    it('should respond 401 if there is no session for given token', async () => {
+      const userWithoutSession = await createUser();
+      const room = await createValidRoom();
+      const token = jwt.sign({ userId: userWithoutSession.id }, process.env.JWT_SECRET);
+
+      const response = await server.get('/booking').set('Authorization', `Bearer ${token}`).send({ roomId: room.id });
+
+      expect(response.status).toEqual(httpStatus.UNAUTHORIZED);
+    });
+  });
+  describe('data is missing', () => {
+    it('Should respond 404 if roomId is not sent', async () => {
+      const token = await generateValidToken();
+      const response = await server.post('/booking').set('Authorization', `Bearer ${token}`);
+
+      expect(response.status).toBe(httpStatus.NOT_FOUND);
+    });
+  });
+  describe('data is invalid', () => {
+    it('Should respond 404 if roomId is invalid', async () => {
+      const token = await generateValidToken();
+      const response = await server.post('/booking').set('Authorization', `Bearer ${token}`).send({ roomId: 1 });
+
+      expect(response.status).toBe(httpStatus.NOT_FOUND);
+    });
+    it('Should respond 403 if room is full', async () => {
+      const token = await generateValidToken();
+      const fullRoom = await createFullRoom();
+      const response = await server
+        .post('/booking')
+        .set('Authorization', `Bearer ${token}`)
+        .send({ roomId: fullRoom.roomId });
+
+      expect(response.status).toBe(httpStatus.FORBIDDEN);
     });
   });
 });
